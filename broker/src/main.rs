@@ -40,6 +40,12 @@ async fn main() {
     let stop = async {
         let mut term = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate()).expect("signal");
         tokio::select! { _ = tokio::signal::ctrl_c() => {}, _ = term.recv() => {} }
+        // open WebSockets (live events, terminals) never end by themselves: give requests in flight a moment, then go
+        tracing::info!("stopping");
+        tokio::spawn(async {
+            tokio::time::sleep(std::time::Duration::from_secs(5)).await;
+            std::process::exit(0);
+        });
     };
     if let Err(e) = jade_fleet::serve(app, listener, stop).await {
         eprintln!("jade-fleet: {e}");
