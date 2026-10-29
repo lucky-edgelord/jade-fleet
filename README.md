@@ -47,9 +47,12 @@ setting at the broker. In the client:
 - the vault is the broker's shared folder: notes are fetched in bulk at start, and changes from other devices, from
   commands or from the server itself show up live;
 - `bash` (Jade's tool, the terminal, flows, schedules) runs real bash on the OptiPlex in the shared vault, with its
-  `python3` and `node`; the terminal is a real one there (it needs xterm.js, loaded from jsDelivr the first time);
+  `python3` and `node`; the terminal is a real one there (xterm.js is built into the page, so it works offline);
 - chat, embeddings, decisions (Ollaya or Ollama) and vision go through the broker to the Xavier;
 - two extra tools: `vault_search` (meaning-based search over every device's notes and memories) and `vision`;
+- everything else of Jade Vault 2.22 comes along: TensorFlow.js, LiteRT and ONNX Runtime (`onnx` tool) on the phone's
+  GPU through WebGPU, USB devices over OTG (`navigator.usb` and the `usb` tool), the phone tools. In a browser, WebGPU
+  and WebUSB only work on secure pages, so the copy the broker serves over plain http has neither (the APK does);
 - a FLEET chip shows the connection and who else is online; `/fleet` reconnects or changes the address. If the
   broker cannot be reached, the client says so instead of quietly using a local vault.
 
